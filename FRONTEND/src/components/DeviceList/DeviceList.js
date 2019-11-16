@@ -1,161 +1,179 @@
 import React, { Component } from 'react';
 import _LightDeviceItem from './DeviceItem/LightDeviceItem';
 import _FanDeviceItem from './DeviceItem/FanDeviceItem';
-import ErrorItem from './DeviceItem/ErrorItem';
+
 import _AirConditionerDeviceItem from './DeviceItem/AirConditionerDeviceItem';
-import InHome from './DeviceItem/InHome';
+//import InHome from './DeviceItem/InHome';
 import _LampDeviceItem from './DeviceItem/LampDeviceItem';
-import OutHome from './DeviceItem/OutHome';
-import { Connector , subscribe} from 'mqtt-react';
-
-
-var data =[
-    {
-        id:1,
-        name:'đèn phòng khách',
-        status:false,
-        type:'light',
-        connect: true,
-        topic:'ABCSE'
-    },
-    {
-        id:2,
-        name:'quạt phòng khách',
-        status:false,
-        type:'fan',
-        connect: true,
-        topic:'ABCSA'
-    },
-    {
-        id:3,
-        name:'đèn nhà tắm',
-        status:false,
-        type:'light',
-        connect: true,
-        topic:'ABCSB'
-    },
-    {
-        id:4,
-        name:'quạt phòng ngủ',
-        status:false,
-        type:'fan',
-        connect: true,
-        topic:'ABCSD'
-    },
-    {
-        id:5,
-        name:'đèn bếp',
-        status:false,
-        type:'light',
-        connect: true,
-        topic:'ABCSF'
-    },
-    {
-        id:6,
-        name:'quạt bếp',
-        status:false,
-        type:'fan',
-        connect: true,
-        topic:'ABCSG'
-    },
-    {
-        id:6,
-        name:'máy lạnh phòng ngủ',
-        status:false,
-        type:'air-conditioner',
-        connect: true,
-        topic:'ABCSH'
-    },
-    {
-        id:7,
-        name:'đèn ngủ',
-        status:false,
-        type :'lamp',
-        connect:true,
-        topic:'ABCSJ'
-    }
-
-];
-
-var datas = data.sort(function(a, b){
-    var x = a.type.toLowerCase();
-    var y = b.type.toLowerCase();
-    if (x < y) {return 1;}
-    if (x > y) {return -1;}
-    return 0;
-});
-
-
-
-
-
-
-
-
+//import OutHome from './DeviceItem/OutHome';
+import { Connector, subscribe } from 'mqtt-react';
+import callApi from '../../apicall/apiCaller';
+import { connect } from 'react-redux';
+import * as Config from '../../mqttcall/Config';
 
 class DeviceList extends Component {
 
-    renderData = () =>{
-        var result = datas.map((value,index)=>{
-            if(!value.connect){
-                return (<ErrorItem
-                    name= {value.name}
-                    index = {value.id}
-                />);
-            }else{
-                switch(value.type){
-                   case 'light' :
-                        const LightDeviceItem = subscribe({topic:value.topic})(_LightDeviceItem);
-                        return( <LightDeviceItem 
-                            name={value.name}
-                            status ={value.status}
-                            index= {value.id}
-                            topic={value.topic}
-                        />);
-                   case  'fan' :
-                        const FanDeviceItem = subscribe({topic:value.topic})(_FanDeviceItem);
-                        return (<FanDeviceItem
-                            name={value.name}
-                            status={value.status}
-                            index ={ value.id}
-                            topic={value.topic}
-                        />);
-                    case 'air-conditioner':
-                        const AirConditionerDeviceItem = subscribe({topic:value.topic})(_AirConditionerDeviceItem);
-                        return (<AirConditionerDeviceItem
-                            name={value.name}
-                            status={value.status}
-                            index ={ value.id}
-                            topic={value.topic}
-                        />);
-                    case 'lamp':
-                            const LampDeviceItem = subscribe({topic:value.topic})(_LampDeviceItem);
-                            return( <LampDeviceItem
-                                name={value.name}
-                                status ={value.status}
-                                index= {value.id}
-                                topic={value.topic}
-                            />);
-                    default :
-                        return null;
-               }
-            }
-        });
-        return result;
+    constructor(props) {
+        super(props);
+        this.state = {
+            devices: [],
+            areas: []
+        }
     }
+
+    sort(data) {
+        let devices = '';
+        if (data.length > 0) {
+            devices = data.sort(function (a, b) {
+                var x = a.type.toLowerCase();
+                var y = b.type.toLowerCase();
+                if (x < y) { return 1; }
+                if (x > y) { return -1; }
+                return 0;
+            });
+        }
+        return devices;
+    }
+
+    sort2(data) {
+        var x = data.splice(data.findIndex(function (element) {
+            return element.mainArea;
+        }), 1);
+        data.unshift(x[0]);
+        return data;
+
+    }
+
+    componentDidMount() {
+        callApi(`api/devices/usercontrolldevice/${this.props.username}`, 'GET', {
+            'x-access-token': this.props.token
+        }).then(res => {
+            if (res.data) {
+                this.setState({
+                    devices: this.sort(res.data.myDevice),
+                    deviceShare: this.sort(res.data.shareDevice)
+                })
+            }
+
+        });
+        // callApi(`api/areas/usercontrollarea/${this.props.username}`,'GET',{
+        //     'x-access-token' : this.props.token
+        // }).then(res=>{
+        //     if(res.data){
+        //         this.setState({
+        //             areas : this.sort2(res.data)
+        //         })
+        //     }
+        // })
+
+    }
+
+    onRenderDevice = (value, index) => {
+        switch (value.type) {
+            case 'light':
+                const LightDeviceItem = subscribe({ topic: value.id, id: value.id })(_LightDeviceItem);
+                return (<LightDeviceItem
+                    key={index}
+                    name={value.name}
+                    status={value.data.status}
+                    index={value.id}
+                    topic={value.id}
+                    connect={value.connect}
+                />);
+            case 'fan':
+                const FanDeviceItem = subscribe({ topic: value.id })(_FanDeviceItem);
+                return (<FanDeviceItem
+                    key={index}
+                    name={value.name}
+                    status={value.data.status}
+                    valueControll={value.data.valueControll}
+                    index={value.id}
+                    topic={value.id}
+                    connect={value.connect}
+                />);
+            case 'air-conditioner':
+                const AirConditionerDeviceItem = subscribe({ topic: value.id })(_AirConditionerDeviceItem);
+                return (<AirConditionerDeviceItem
+                    key={index}
+                    name={value.name}
+                    status={value.data.status}
+                    valueControll={value.data.valueControll}
+                    index={value.id}
+                    topic={value.id}
+                    connect={value.connect}
+                />);
+            case 'lamp':
+                const LampDeviceItem = subscribe({ topic: value.id })(_LampDeviceItem);
+                return (<LampDeviceItem
+                    key={index}
+                    name={value.name}
+                    status={value.data.status}
+                    index={value.id}
+                    topic={value.id}
+                    connect={value.connect}
+                />);
+            default:
+                return null;
+        }
+    }
+
+    // renderData = (area) =>{
+    //     let result='';
+    //     if(area!=undefined){
+    //         result = this.state.devices.map((value,index)=>{
+    //             if(area.mainArea){
+    //                  console.log(true);
+    //                  return this.onRenderDevice(value,index);
+    //             }else {
+    //                  if(area.id === value.manaAreas)
+    //                      return this.onRenderDevice(value,index);
+    //             }
+    //             return '';
+    //         });
+    //         return (<div> <h4 className="p-l-2">{area.name}</h4><div className="row">{result}</div></div>);
+    //     }
+    //     return '';
+    // }
+
+    onRenderData2 = () => {
+        let result = '';
+        let result1 = '';
+        if (this.state.devices !== '') {
+            result = this.state.devices.map((value, index) => {
+                return this.onRenderDevice(value, index);
+            });
+        }
+        if(!(this.state.deviceShare==='' || this.state.deviceShare===undefined)){
+            result1 = this.state.deviceShare.map((value,index)=>{
+                return this.onRenderDevice(value,index);
+            })
+        }
+        return (<div> 
+            <h4 className="p-l-2">Nhà Của {this.props.username}</h4><div className="row">{result}</div>
+            <h4 className="p-l-2">Thiết Bị Được Chia Sẽ</h4><div className="row">{result1}</div>
+
+
+        </div>)
+    }
+
+
     render() {
-       
+
         return (
-            <Connector mqttProps="ws://171.227.97.11:1884/">
-                
-                <div className="row">
-                    <InHome name="Về Nhà" status={false}/>
-                    <OutHome name="Rời Khỏi Nhà"status={true}/>
-                    {this.renderData()}                         
-                </div> 
+            <Connector mqttProps={Config.MQTT_URL}>
+                {/* <InHome name="Về Nhà" status={false}/>
+                <OutHome name="Rời Khỏi Nhà"status={true}/> */}
+                {this.onRenderData2()}
             </Connector>
         );
     }
 }
 
-export default DeviceList;
+const mapStateToProps = state => {
+    return {
+        username: state.username,
+        token: state.token
+    }
+}
+
+export default connect(mapStateToProps)(DeviceList);

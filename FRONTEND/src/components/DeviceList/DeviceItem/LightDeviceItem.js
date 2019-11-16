@@ -3,53 +3,70 @@ import React, { Component } from 'react';
 class LightDeviceItem extends Component {
     constructor(props) {
         super(props);
-        this.state = { 
-            youClick : false,
+        this.state = {
+            youClick: false,
             status: false,
             topic: '',
+            connect: false
         }
     }
-    
+
+    componentWillUnmount() {
+        var { mqtt } = this.props;
+        mqtt.unsubscribe(this.state.topic);
+    }
+
     componentWillMount() {
         
         this.setState({
             status: this.props.status,
-            topic : this.props.topic,
+            topic: this.props.topic,
+            connect: this.props.connect
         })
 
     }
-    componentWillReceiveProps(nextProps){
-        
+    componentWillReceiveProps(nextProps) {
+
         var newData = nextProps.data[0];
         console.log(newData);
-        if(newData!=undefined){
-            if(newData.topic==this.state.topic && this.state.youClick==false){
+        if (newData !== undefined) {
+            if (newData.topic === this.state.topic && this.state.youClick === false) {
                 this.setState({
-                    status:newData.status
+                    status: newData.status,
+                    connect : newData.connect
                 })
-            }else{
+            } else {
                 this.setState({
-                    youClick:false
+                    youClick: false
                 })
             }
         }
-        
-        
     }
 
     onChange = () => {
-        
+
         this.setState({
-            youClick:true,
+            youClick: true,
             status: !this.state.status
         });
-        
-        const {mqtt} = this.props;
-        mqtt.publish(this.props.topic,JSON.stringify({name:this.props.name,topic:this.props.topic,status:!this.state.status}));
+
+        const { mqtt } = this.props;
+        mqtt.publish(this.props.topic, JSON.stringify({ name: this.props.name, topic: this.props.topic, status: !this.state.status,connect : true }));
     }
     changeStatus = () => {
         
-        if (!this.state.status) {
+        if (this.state.connect===false) {
+            return (
+                <div className="card card-hover bg-danger">
+                    <h4 className="text-white text-center">{this.props.name}</h4>
+                    <div className="box  text-center">
+
+                        <h1 className="font-light text-white"><i className="mdi mdi-alert"></i></h1>
+                    </div>
+                    <h4 className="text-white text-center p-b-5">Không kết nối</h4>
+                </div>
+            );
+        } else if (!this.state.status) {
             return (
                 <div className="card card-hover bg-dark  bg-w-r-g-x ">
                     <h4 className="text-white text-center">{this.props.name}</h4>
@@ -79,7 +96,7 @@ class LightDeviceItem extends Component {
 
 
                 {this.changeStatus()}
-              
+
             </div>
         );
     }

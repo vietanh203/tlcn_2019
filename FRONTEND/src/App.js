@@ -13,7 +13,7 @@ class App extends Component {
       </Router>  
     ) : (
       <Router>
-        <Route component={Home} />
+        <Route exact component={Home} />
       </Router>
     )
   }

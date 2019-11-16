@@ -77,7 +77,7 @@ class AddNewDevice extends Component {
     this.setState({
       formControll
     });
-    if(index ==2 ){
+    if(index ===2 ){
       this.setState({
         onButtonNext : 'none' ,
         onButtonFinish : 'block'
@@ -112,15 +112,16 @@ class AddNewDevice extends Component {
     });
     var formControll = [...{...this.state}.formControll];
     if(formControll[index].validateTablist){
-      formControll.map((value,index)=>{
-        if(value.id==id){
-          value.statusTablist=true;
-          value.status=true;
+      // formControll.map((value,index)=>
+      for(var i =0 ; i < formControll.length ; i++ ){
+        if(formControll[i].id===id){
+          formControll[i].statusTablist=true;
+          formControll[i].status=true;
         }else{
-          value.statusTablist=false;
-          value.status=false;
+          formControll[i].statusTablist=false;
+          formControll[i].status=false;
         }
-      });
+      };
       this.setState({
         formControll
       });
@@ -132,32 +133,31 @@ class AddNewDevice extends Component {
       <div className="card">
         <div className="card-body wizard-content">
           <h4 className="card-title">Basic Form Example</h4>
-          <h6 className="card-subtitle" />
           <form id="example-form" action="#" className="m-t-40" noValidate="novalidate">
             <div role="application" className="wizard clearfix" id="steps-uid-0">
               <div className="steps clearfix">
                 <ul role="tablist">
                   <li role="tab" className={this.onStatusTablist(1)} onClick={() =>this.onClickTabList(1)} aria-disabled="false" aria-selected="true">
-                    <a id="steps-uid-0-t-0" href="#steps-uid-0-h-0" aria-controls="steps-uid-0-p-0">
+                    <a id="steps-uid-0-t-0" href="# " aria-controls="steps-uid-0-p-0">
                       
                       <span className="number">1.</span>
                       Cài đặt thiết bị
                     </a>
                   </li>
                   <li role="tab"  className={this.onStatusTablist(2)} onClick={() => this.onClickTabList(2)} aria-disabled="true" >
-                    <a id="steps-uid-0-t-1" href="#steps-uid-0-h-1" aria-controls="steps-uid-0-p-1">
+                    <a id="steps-uid-0-t-1" href="# " aria-controls="steps-uid-0-p-1">
                       <span className="number">2.</span>
                       Kết Nối Với Thiết Bị
                     </a>
                   </li>
                   <li role="tab"  className={this.onStatusTablist(3)} onClick={() =>this.onClickTabList(3)} aria-disabled="true">
-                    <a id="steps-uid-0-t-2" href="#steps-uid-0-h-2" aria-controls="steps-uid-0-p-2">
+                    <a id="steps-uid-0-t-2" href="# " aria-controls="steps-uid-0-p-2">
                       <span className="number">3.</span>
-                      Cài Đặt Cảm Biến
+                      Cài Đặt Khu Vực
                     </a>
                   </li>
                   <li role="tab"  className={this.onStatusTablist(4)} onClick={()=>this.onClickTabList(4)} aria-disabled="true">
-                    <a id="steps-uid-0-t-3" href="#steps-uid-0-h-3" aria-controls="steps-uid-0-p-3">
+                    <a id="steps-uid-0-t-3" href="# " aria-controls="steps-uid-0-p-3">
                       <span className="number">4.</span>
                       Chia Sẽ Thiết Bị
                     </a>
@@ -185,13 +185,13 @@ class AddNewDevice extends Component {
                   </li>
                   <li aria-hidden="false" aria-disabled="false" style={{display : this.state.onButtonNext }} >
                     <a 
-                      href="#next" 
+                      href="# " 
                       role="menuitem"
                       onClick = {() => this.onNext()}
                     >Next</a>
                   </li>
                   <li aria-hidden="false" style={{ display: this.state.onButtonFinish }}>
-                    <a href="#finish" role="menuitem">Finish</a>
+                    <a href="# " role="menuitem">Finish</a>
                   </li>
                 </ul>
               </div>

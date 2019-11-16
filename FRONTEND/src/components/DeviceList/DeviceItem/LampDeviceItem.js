@@ -6,22 +6,30 @@ class LightDeviceItem extends Component {
         this.state = {
             youClick: false,
             status: false,
-            topic: ''
+            topic: '',
+            connect : false
         }
+    }
+
+    componentWillUnmount(){
+        var {mqtt} = this.props;
+        mqtt.unsubscribe(this.state.topic);
     }
 
     componentWillMount() {
         this.setState({
             topic: this.props.topic,
-            status: this.props.status
+            status: this.props.status,
+            connect : this.props.connect
         })
     }
     componentWillReceiveProps(nextProps){
         var newData = nextProps.data[0];
-        if(newData!=undefined){
-            if(newData.topic==this.state.topic && this.state.youClick==false){
+        if(newData!==undefined){
+            if(newData.topic===this.state.topic && this.state.youClick===false){
                 this.setState({
-                    status:newData.status
+                    status:newData.status,
+                    connect : newData.connect
                 })
             }else{
                 this.setState({
@@ -37,10 +45,22 @@ class LightDeviceItem extends Component {
         });
         
         const {mqtt} = this.props;
-        mqtt.publish(this.props.topic,JSON.stringify({name:this.props.name,topic:this.props.topic,status:!this.state.status}));
+        mqtt.publish(this.props.topic, JSON.stringify({ name: this.props.name, topic: this.props.topic, status: !this.state.status,connect : true }));
     }
     changeStatus = () => {
-        if (!this.state.status) {
+
+        if(this.state.connect ===false ){
+            return (
+                <div className="card card-hover bg-danger">
+                    <h4 className="text-white text-center">{this.props.name}</h4>
+                    <div className="box  text-center">
+                        
+                        <h1 className="font-light text-white"><i className="mdi mdi-alert"></i></h1> 
+                    </div>
+                    <h4 className="text-white text-center p-b-5">Không kết nối</h4>
+                </div>
+            );
+        }else if (!this.state.status) {
             return (
                 <div className="card card-hover bg-dark bg-w-r-g-x ">
                     <h4 className="text-white text-center">{this.props.name}</h4>

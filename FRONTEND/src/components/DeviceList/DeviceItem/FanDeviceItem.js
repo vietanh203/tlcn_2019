@@ -6,30 +6,38 @@ class FanDeviceItem extends Component {
         super(props);
         this.state = {
             status: false,
-            youClick : false,
-            topic : '',
-            valueControll : 1
+            youClick: false,
+            topic: '',
+            valueControll: 1,
+            connect: false
         }
     }
 
+    componentWillUnmount() {
+        var { mqtt } = this.props;
+        mqtt.unsubscribe(this.state.topic);
+    }
 
     componentWillMount() {
         this.setState({
             status: this.props.status,
-            topic : this.props.topic
+            topic: this.props.topic,
+            connect: this.props.connect,
+            valueControll: this.props.valueControll
         })
     }
-    componentWillReceiveProps(nextProps){
+    componentWillReceiveProps(nextProps) {
         var newData = nextProps.data[0];
-        if(newData!=undefined){
-            if(newData.topic==this.state.topic && this.state.youClick==false){
+        if (newData !== undefined) {
+            if (newData.topic === this.state.topic && this.state.youClick === false) {
                 this.setState({
-                    status:newData.status,
-                    valueControll : !newData.status ? 1 : newData.valueControll
+                    status: newData.status,
+                    connect: newData.connect,
+                    valueControll: !newData.status ? 1 : newData.valueControll
                 })
-            }else{
+            } else {
                 this.setState({
-                    youClick:false
+                    youClick: false
                 })
             }
         }
@@ -37,20 +45,31 @@ class FanDeviceItem extends Component {
 
     onChange = () => {
         this.setState({
-            youClick:true,
+            youClick: true,
             status: !this.state.status,
-            valueControll : 1
+            valueControll: 1
         });
-        
-        const {mqtt} = this.props;
-        mqtt.publish(this.props.topic,JSON.stringify({name:this.props.name,topic:this.props.topic,status:!this.state.status,valueControll : 1}));
+
+        const { mqtt } = this.props;
+        mqtt.publish(this.props.topic, JSON.stringify({ name: this.props.name, topic: this.props.topic, status: !this.state.status,connect : true, valueControll: 1 }));
     }
     changeStatus = () => {
-        if (!this.state.status) {
+        if (this.state.connect === false) {
+            return (
+                <div className="card card-hover bg-danger">
+                    <h4 className="text-white text-center">{this.props.name}</h4>
+                    <div className="box  text-center">
+
+                        <h1 className="font-light text-white"><i className="mdi mdi-alert"></i></h1>
+                    </div>
+                    <h4 className="text-white text-center p-b-5">Không kết nối</h4>
+                </div>
+            )
+        }else if (!this.state.status) {
             return (
                 <div className="card bg-dark card-hover bg-w-r-g-x">
                     <h4 className="text-white text-center">{this.props.name}</h4>
-                    <div className="box text-center" onClick={() => this.onChange()} >                  
+                    <div className="box text-center" onClick={() => this.onChange()} >
                         <h1 className="font-light text-white"><i className="mdi mdi-fan" /></h1>
                     </div>
                     <div className="p-b-36"></div>
@@ -60,42 +79,42 @@ class FanDeviceItem extends Component {
             return (
                 <div className="card card-hover bg-dark   bg-w-r-g">
                     <h4 className="text-white text-center">{this.props.name}</h4>
-                    <div className="box  text-center"  onClick={() => this.onChange()} >
+                    <div className="box  text-center" onClick={() => this.onChange()} >
                         <h1 className="font-light text-yellow">
 
-                            <i className="mdi mdi-fan"  />
+                            <i className="mdi mdi-fan" />
                         </h1>
-                        
+
                     </div>
-                        <h3 className="text-white text-center">
-                            <i className="text-left fas fa-minus  " onClick={()=> this.onChangValueControll('-')} />
-                            <i className="p-l-50 p-r-50 block-text">{this.state.valueControll}</i>
-                            <i className="text-right fas fa-plus" onClick={()=> this.onChangValueControll('+')}
-                            
-                             />
-                        </h3>
+                    <h3 className="text-white text-center">
+                        <i className="text-left fas fa-minus  " onClick={() => this.onChangValueControll('-')} />
+                        <i className="p-l-50 p-r-50 block-text">{this.state.valueControll}</i>
+                        <i className="text-right fas fa-plus" onClick={() => this.onChangValueControll('+')}
+
+                        />
+                    </h3>
                 </div>
             );
         }
 
     }
-    onChangValueControll = (char) =>{
-        const {mqtt} = this.props;
-        if(char=='+' && this.state.valueControll<3){
+    onChangValueControll = (char) => {
+        const { mqtt } = this.props;
+        if (char === '+' && this.state.valueControll < 3) {
             this.setState({
-                valueControll: this.state.valueControll+1
+                valueControll: this.state.valueControll + 1
             })
-            mqtt.publish(this.props.topic,JSON.stringify({name:this.props.name,topic:this.props.topic,status:true,valueControll: this.state.valueControll+1}));
+            mqtt.publish(this.props.topic, JSON.stringify({ name: this.props.name, topic: this.props.topic, status: true, connect: true, valueControll: this.state.valueControll + 1 }));
         }
-        if(char=='-' && this.state.valueControll>1){ 
+        if (char === '-' && this.state.valueControll > 1) {
             this.setState({
-                valueControll: this.state.valueControll-1
+                valueControll: this.state.valueControll - 1
             })
-            mqtt.publish(this.props.topic,JSON.stringify({name:this.props.name,topic:this.props.topic,status:true,valueControll: this.state.valueControll-1}));
+            mqtt.publish(this.props.topic, JSON.stringify({ name: this.props.name, topic: this.props.topic, status: true, connect: true, valueControll: this.state.valueControll - 1 }));
         }
-        
-        
-    } 
+
+
+    }
 
     render() {
         return (
@@ -104,8 +123,8 @@ class FanDeviceItem extends Component {
 
                 {this.changeStatus()}
 
-            
-        </div >
+
+            </div >
         );
     }
 }

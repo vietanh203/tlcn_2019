@@ -7,7 +7,7 @@ class FormStepOne extends Component {
     render() {
        
         return (
-            <section id="steps-uid-0-p-0" role="tabpanel" aria-labelledby="steps-uid-0-h-0" className="body current" aria-hidden="false" style={this.onForm()}>
+            <section  style={{backgroundColor:'#9fbbd4'}} id="steps-uid-0-p-0" role="tabpanel" aria-labelledby="steps-uid-0-h-0" className="body current" aria-hidden="false" style={this.onForm()}>
                 <ul className="text-center">Kết Nối Thiết Bị Với Nguồn Điện Và Reset Thiết Bị</ul>
             </section>
         );

@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import callApi from './../../apicall/apiCaller';
 class LoginForm extends Component {
 
     constructor(props){
         super(props);
         this.state  = {
             Username : '',
-            Password :''
+            Password :'',
+            falseLogin : false
         }
     }
 
@@ -18,12 +19,26 @@ class LoginForm extends Component {
         this.setState({
             [name] :value
         })
-        console.log(this.state);
     }
 
     onSubmit = () =>{
-        if(this.state.Username=='admin' && this.state.Password=='admin')
-            this.props.onLogin();
+        // if(this.state.Username=='admin' && this.state.Password=='admin')
+        //     
+        callApi('api/authenticate','POST',{
+            username : this.state.Username,
+            password : this.state.Password
+        }).then(res=>{
+            if(res.data.success){
+                this.props.onLogin(this.state.Username,res.data.token);
+            }else {
+                this.setState({
+                    falseLogin : true
+                })
+            }
+            
+        })
+        
+
     }
 
     render() {
@@ -104,9 +119,11 @@ const mapDispatchToProps = (dispatch,ownProps)=>{
                 type:"SHOW_FORM_REGISTER"
             })
         },
-        onLogin : ()=>{
+        onLogin : (username,token)=>{
             dispatch({
-                type : "IS_AUTHENTICATE"
+                type : "IS_AUTHENTICATE",
+                username,
+                token
             })
         }
 
