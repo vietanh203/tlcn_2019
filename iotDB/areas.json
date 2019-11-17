@@ -1,0 +1,7 @@
+{"_id":{"$oid":"5d998dd626a08b755c1c4061"},"id":"P0001","name":"Phòng khách","areaControll":[],"deviceControll":["TB001","TB002"],"manaUser":"lcnghia95","shareuser":[],"manaArea":"H0001"}
+{"_id":{"$oid":"5d998dd626a08b755c1c4062"},"id":"P0002","name":"Phòng ngủ","areaControll":[],"deviceControll":["TB003","TB004"],"manaUser":"lcnghia95","shareuser":[],"manaArea":"H0001"}
+{"_id":{"$oid":"5d998dd626a08b755c1c4063"},"id":"P0003","name":"nhà bếp","areaControll":[],"deviceControll":["TB005","TB006"],"manaUser":"lcnghia95","shareuser":[],"manaArea":"H0001"}
+{"_id":{"$oid":"5d998dd626a08b755c1c4064"},"id":"P0004","name":"nhà vệ sinh","areaControll":[],"deviceControll":["TB007","TB008"],"manaUser":"lcnghia95","shareuser":[],"manaArea":"H0001"}
+{"_id":{"$oid":"5d9ad51626a08b755c1c4068"},"id":"H0001","name":"nhà của Nghĩa","areaControll":["P0001","P0002","P0003","P0004"],"deviceControll":[],"manaUser":"lcnghia95","shareuser":[],"manaArea":"","mainArea":true}
+{"_id":{"$oid":"5dc04e504f0c16b8a7f3bcda"},"id":"H0002","name":"nhà của vietanh","areaControll":["P0010"],"deviceControll":[],"manaUser":"vietanh98","shareuser":[],"manaArea":"","mainArea":true}
+{"_id":{"$oid":"5dc0547c4f0c16b8a7f3bcdb"},"id":"P0010","name":"Phòng khách","areaControll":[],"deviceControll":["TB010","TB011"],"manaUser":"vietanh98","shareuser":[],"manaArea":"H0002"}
