@@ -122,7 +122,7 @@ class AirConditionerDeviceItem extends Component {
 
     render() {
         return (
-            <div className="col-md-6 col-lg-3 col-xl-2 col-6">
+            <div className="col-md-3 col-lg-3 col-xl-2 col-3">
                 {this.changeStatus()}
             </div>
         );

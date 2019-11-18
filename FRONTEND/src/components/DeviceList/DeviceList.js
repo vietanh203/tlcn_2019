@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Statics from './Statics'
 import _LightDeviceItem from './DeviceItem/LightDeviceItem';
 import _FanDeviceItem from './DeviceItem/FanDeviceItem';
 
@@ -143,16 +144,49 @@ class DeviceList extends Component {
                 return this.onRenderDevice(value, index);
             });
         }
-        if(!(this.state.deviceShare==='' || this.state.deviceShare===undefined)){
-            result1 = this.state.deviceShare.map((value,index)=>{
-                return this.onRenderDevice(value,index);
+        if (!(this.state.deviceShare === '' || this.state.deviceShare === undefined)) {
+            result1 = this.state.deviceShare.map((value, index) => {
+                return this.onRenderDevice(value, index);
             })
         }
-        return (<div> 
-            <h4 className="p-l-2">Nhà Của {this.props.username}</h4><div className="row">{result}</div>
-            <h4 className="p-l-2">Thiết Bị Được Chia Sẽ</h4><div className="row">{result1}</div>
-
-
+        return (<div>
+            <Statics />
+            <div class="row">
+                <div class="col-lg-12 col-xl-12">
+                    <div class="card-stats mb-4 mb-xl-0 card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <div>
+                                        <h5 class="text-uppercase text-muted mb-0 card-title">Nhà Của {this.props.username}
+                                            <i class="fas fa-angle-down float-right" data-toggle="collapse" data-target="#home-devices"></i></h5>
+                                    </div>
+                                    <hr/>
+                                    <div id="home-devices" className="row collapse">{result}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-xl-12">
+                    <div class="card-stats mb-4 mb-xl-0 card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <div>
+                                        <h5 class="text-uppercase text-muted mb-0 card-title">Thiết Bị Được Chia Sẻ
+                                        <i class="fas fa-angle-down float-right" data-toggle="collapse" data-target="#shared-devices"></i></h5>
+                                    </div>
+                                    <hr />
+                                    <div id="shared-devices" className="row collapse">{result1}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>)
     }
 

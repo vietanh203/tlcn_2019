@@ -10,11 +10,11 @@ class HistoryDevice extends Component {
                             <table id="zero_config" className="table table-striped table-bordered">
                                 <thead>
                                     <tr>
-                                        <th>Name</th>
-                                        <th>Position</th>
-                                        <th>Office</th>
-                                        <th>Age</th>
-                                        <th>Start date</th>
+                                        <th>Tên thiết bị</th>
+                                        <th>Vị trí</th>
+                                        <th>Công suất</th>
+                                        <th>Thời gian sử dụng</th>
+                                        <th>Tổng tiêu thụ</th>
                                         <th>Salary</th>
                                     </tr>
                                 </thead>
@@ -44,16 +44,7 @@ class HistoryDevice extends Component {
                                         <td>$162,700</td>
                                     </tr>
                                 </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Position</th>
-                                        <th>Office</th>
-                                        <th>Age</th>
-                                        <th>Start date</th>
-                                        <th>Salary</th>
-                                    </tr>
-                                </tfoot>
+                
                             </table>
                         </div>
                     </div>
