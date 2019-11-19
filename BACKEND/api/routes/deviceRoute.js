@@ -16,4 +16,5 @@ module.exports = function(app){
         .get(device.list_all_sharecontrolldevice)
     app.route('/devices/connectdevice')
         .post(device.device_connect)
+    
 };                                  

@@ -9,7 +9,8 @@ class FormStepFour extends Component {
             user: [],
             userInput: '',
             messageUser:'',
-            statusUser: 0
+            statusUser: 0,
+            
         }
     }
     onForm = () => {
@@ -27,7 +28,11 @@ class FormStepFour extends Component {
             this.setState({
                 messageUser: 'Không Thể Chia Sẽ Cho Chính Mình'
             })
-        } else {
+        } else if(this.state.userInput==''){
+            this.setState({
+                messageUser:'Loi Nhap Rong'
+            })
+        }else{
             var user = [...{ ...this.state }.user];
             callApi(`api/users/finduser/${this.state.userInput}`, 'POST', {
                 token: this.props.token
@@ -35,6 +40,7 @@ class FormStepFour extends Component {
                 if (res.data) {
                     if (res.data.status && !this.state.user.includes(this.state.userInput)) {
                         user.push(this.state.userInput);
+                        this.props.callFromParent(user)
                         this.setState({
                             user: user,
                             userInput: '',
@@ -52,7 +58,6 @@ class FormStepFour extends Component {
             })
         }
 
-        console.log(this.state.messageUser)
     }
 
 

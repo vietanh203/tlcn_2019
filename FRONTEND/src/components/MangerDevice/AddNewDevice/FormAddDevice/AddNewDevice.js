@@ -3,8 +3,8 @@ import FormStepOne from './FormStepOne';
 import FormStepTwo from './FormStepTwo';
 import FormStepThree from './FormStepThree';
 import FormStepFour from './FormStepFour';
-
-
+import { connect } from 'react-redux'
+import callApi from '../../../../apicall/apiCaller'
 
 
 class AddNewDevice extends Component {
@@ -42,9 +42,21 @@ class AddNewDevice extends Component {
         }
       ],
       onButtonNext : 'block',
-      onButtonFinish: 'none'
+      onButtonFinish: 'none',
+      id:'',
+      nameDevice:'',
+      manaUser:'',
+      manaAreas:'',
+      shareID:[]
     }
   }
+
+  componentDidMount(){
+    this.setState({
+      manaUser:this.props.username
+    })
+  }
+
   onForm = (id) => {
     var form = this.state.formControll.find((value,index)=>{
       return value ?  value.id ===id : '';
@@ -81,6 +93,11 @@ class AddNewDevice extends Component {
       this.setState({
         onButtonNext : 'none' ,
         onButtonFinish : 'block'
+      });
+    }
+    if(index ===0 && formControll[index].validateTablist!==false ){
+      this.setState({
+        onButtonNext : 'none' ,
       });
     }
     console.log(this.state);
@@ -128,7 +145,49 @@ class AddNewDevice extends Component {
     }
     
   }
+  getDataFormTwo = (id,check)=>{
+    console.log(id)
+   if(check){
+    this.setState({
+      id:id
+    })
+    this.onNext()
+   }
+  }
+  getDataFormThree = (nameDevice,manaAreas) =>{
+    console.log(nameDevice,manaAreas)
+    this.setState({
+      manaAreas : manaAreas,
+      nameDevice : nameDevice
+    })
+    this.onNext()
+  }
+  getDataFormFour = (arrUser)=>{
+    console.log(arrUser)
+    this.setState({
+      shareID:arrUser
+    })
+    
+  }
+
+  onSubmit = ()=>{
+    
+    if(this.state.id){
+      callApi(`api/devices/${this.state.id}`,'PUT',{
+        token:this.props.token,
+        name : this.state.nameDevice,
+        shareID:this.state.shareID,
+        manaUser:this.state.manaUser,
+        manaAreas:this.state.manaAreas
+
+      }).then(res=>{
+        console.log(res)
+      })
+    }
+  }
+
   render() {
+    console.log(this.state.nameDevice)
     return (
       <div className="card">
         <div className="card-body wizard-content">
@@ -168,11 +227,11 @@ class AddNewDevice extends Component {
                 <h3 id="steps-uid-0-h-0" tabIndex={-1} className="title">Account</h3>
                 <FormStepOne onForm ={this.onForm(1)}/>
                 <h3 id="steps-uid-0-h-1" tabIndex={-1} className="title">Profile</h3>
-                <FormStepTwo onForm ={this.onForm(2)} />
+                <FormStepTwo callFromParent={this.getDataFormTwo} onForm ={this.onForm(2)} />
                 <h3 id="steps-uid-0-h-2" tabIndex={-1} className="title">Hints</h3>
-                <FormStepThree onForm ={this.onForm(3)} />
+                <FormStepThree callFromParent={this.getDataFormThree} onForm ={this.onForm(3)} />
                 <h3 id="steps-uid-0-h-3" tabIndex={-1} className="title">Finish</h3>
-                <FormStepFour onForm ={this.onForm(4)} />
+                <FormStepFour callFromParent={this.getDataFormFour} onForm ={this.onForm(4)} />
               </div>
               <div className="actions clearfix">
                 <ul role="menu" aria-label="Pagination">
@@ -190,7 +249,7 @@ class AddNewDevice extends Component {
                       onClick = {() => this.onNext()}
                     >Next</a>
                   </li>
-                  <li aria-hidden="false" style={{ display: this.state.onButtonFinish }}>
+                  <li onClick={()=>this.onSubmit()} aria-hidden="false" style={{ display: this.state.onButtonFinish }}>
                     <a href="# " role="menuitem">Finish</a>
                   </li>
                 </ul>
@@ -204,4 +263,11 @@ class AddNewDevice extends Component {
   }
 }
 
-export default AddNewDevice;
+const mapStateToProps = state =>{
+  return {
+    username : state.username,
+    token : state.token
+  }
+}
+
+export default connect(mapStateToProps)(AddNewDevice);

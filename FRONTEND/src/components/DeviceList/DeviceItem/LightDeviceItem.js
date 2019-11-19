@@ -28,7 +28,7 @@ class LightDeviceItem extends Component {
     componentWillReceiveProps(nextProps) {
 
         var newData = nextProps.data[0];
-        console.log(newData);
+        
         if (newData !== undefined) {
             if (newData.topic === this.state.topic && this.state.youClick === false) {
                 this.setState({

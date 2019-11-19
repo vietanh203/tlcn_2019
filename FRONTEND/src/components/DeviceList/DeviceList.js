@@ -18,7 +18,8 @@ class DeviceList extends Component {
         super(props);
         this.state = {
             devices: [],
-            areas: []
+            deviceShare:[]
+            
         }
     }
 
@@ -45,15 +46,16 @@ class DeviceList extends Component {
 
     }
 
-    componentDidMount() {
+    componentWillMount() {
         callApi(`api/devices/usercontrolldevice/${this.props.username}`, 'GET', {
             'x-access-token': this.props.token
         }).then(res => {
             if (res.data) {
                 this.setState({
-                    devices: this.sort(res.data.myDevice),
-                    deviceShare: this.sort(res.data.shareDevice)
+                    devices: this.sort(res.data.myDevice ),
+                    deviceShare: this.sort(res.data.shareDevice )
                 })
+                console.log(true)
             }
 
         });
@@ -139,20 +141,37 @@ class DeviceList extends Component {
     onRenderData2 = () => {
         let result = '';
         let result1 = '';
-        if (this.state.devices !== '') {
+        let arrDeviceOnline = 0;
+        let arrShareDeviceOnline = 0;
+        let arrShareUser =[];
+        if (this.state.devices !== []) {
+            arrDeviceOnline =this.state.devices.filter(device=>device.connect==true).length;
             result = this.state.devices.map((value, index) => {
+                value.shareID.map((id,index)=>{
+                   
+                    if(!arrShareUser.includes(id)){
+                        
+                        arrShareUser.push(id)
+                    }
+                })
                 return this.onRenderDevice(value, index);
             });
+           
         }
-        if (!(this.state.deviceShare === '' || this.state.deviceShare === undefined)) {
+        if (!(this.state.deviceShare === [] || this.state.deviceShare === undefined)) {
+            arrShareDeviceOnline = this.state.deviceShare.filter(device=>device.connect==true).length;
             result1 = this.state.deviceShare.map((value, index) => {
                 return this.onRenderDevice(value, index);
             })
         }
+
         return (<div>
-            <Statics />
-            <div class="row">
-                <div class="col-lg-12 col-xl-12">
+            <Statics 
+                onCountDeviceOnlie={arrDeviceOnline+arrShareDeviceOnline}  
+                onCountShareUser ={arrShareUser.length}
+            />
+            <div class="row p-t-10">
+                <div class="col-lg-12 col-xl-12 col-sm-12 col-md-12">
                     <div class="card-stats mb-4 mb-xl-0 card">
                         <div class="card-body">
                             <div class="row">
@@ -162,15 +181,15 @@ class DeviceList extends Component {
                                             <i class="fas fa-angle-down float-right" data-toggle="collapse" data-target="#home-devices"></i></h5>
                                     </div>
                                     <hr/>
-                                    <div id="home-devices" className="row collapse">{result}</div>
+                                    <div id="home-devices" className="row ">{result}</div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-12 col-xl-12">
+            <div class="row p-t-10">
+                <div class="col-lg-12 col-xl-12 col-sm-12 col-md-12">
                     <div class="card-stats mb-4 mb-xl-0 card">
                         <div class="card-body">
                             <div class="row">
@@ -180,7 +199,7 @@ class DeviceList extends Component {
                                         <i class="fas fa-angle-down float-right" data-toggle="collapse" data-target="#shared-devices"></i></h5>
                                     </div>
                                     <hr />
-                                    <div id="shared-devices" className="row collapse">{result1}</div>
+                                    <div id="shared-devices" className="row ">{result1}</div>
                                 </div>
                             </div>
                         </div>
@@ -192,7 +211,7 @@ class DeviceList extends Component {
 
 
     render() {
-
+        console.log(this.state)
         return (
             <Connector mqttProps={Config.MQTT_URL}>
                 {/* <InHome name="Về Nhà" status={false}/>

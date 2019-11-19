@@ -2,13 +2,10 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var UserSchema = new Schema({
-    name: {
-      type: String,
-      required: 'Kindly enter the name of the user'
-    },
-    Created_date: {
-      type: Date,
-      default: Date.now
+    _id: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      auto: true,
     },
     areaControll :{
       type: Array
@@ -22,7 +19,8 @@ var UserSchema = new Schema({
     shareID : Array,
     id:String,
     password:String,
-    manaUser : String
+    manaUser : String,
+    name:String
   }); 
   
   module.exports = mongoose.model('devices', UserSchema);

@@ -34,6 +34,7 @@ class FormStepTwo extends Component {
             password:this.state.password
         }).then(res=>{
             if(res.data){
+                this.props.callFromParent(this.state.id,true)
                 this.setState({
                     success:res.data.success,
                     message : res.data.message          

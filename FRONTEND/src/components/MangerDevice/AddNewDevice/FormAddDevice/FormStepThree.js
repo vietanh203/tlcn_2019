@@ -7,7 +7,9 @@ class FormStepThree extends Component {
     this.state = {
       areas: [],
       mainArea:'',
-      childArea:''
+      childArea:'',
+      areaSelect :'',
+      nameDevice:''
     }
   }
 
@@ -18,7 +20,7 @@ class FormStepThree extends Component {
     this.setState({
       [name]:value
     })
-    console.log(this.state.mainArea)
+    console.log(this.state.childArea)
   }
 
   onForm = () => {
@@ -59,8 +61,21 @@ class FormStepThree extends Component {
     }
     return result;
   }
+
+  onSubmit = ()=>{
+    this.props.callFromParent(this.state.nameDevice,this.state.childArea)
+  }
+  // onChange =(events)=>{
+  //   let name = events.target.name;
+  //   let value = events.target.value;
+  //   this.setState({
+  //     [name]:value
+  //   })
+  //   console.log(this.state.nameDevice)
+  // }
+
   render() {
-    console.log(this.state)
+    
     return (
 
       <section style={{ backgroundColor: '#9fbbd4' }} id="steps-uid-0-p-2" role="tabpanel" aria-labelledby="steps-uid-0-h-2" className="body" aria-hidden="true" style={this.onForm()}>
@@ -80,8 +95,11 @@ class FormStepThree extends Component {
                   {this.onRenderOptionChild()}
                   {/* <option className="text-center" value="haha">Nhà của Nghĩa</option> */}
                 </select>
+                <label><h3>Ten Thiet Bi</h3></label>&nbsp;
+                <input onChange={(events)=>this.onChange(events)} name='nameDevice' className="text-center" type="text" style={{'width':'350px', 'height':'45px','border':'solid'}} onChange={(events)=>this.onChange(events)}/>
+
               </form>
-              <br/><button type="button" className="btn btn-primary">Thêm Mới</button>
+              <br/><button onClick={()=>this.onSubmit()} type="button" className="btn btn-primary">Xac Nhan</button>
             </div>
           </div>
         </div>

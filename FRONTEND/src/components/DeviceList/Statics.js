@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 class Statics extends Component {
     render() {
+        // console.log(this.props.onCountShareUser)
         return (
             <div class="row">
                 <div class="col-lg-3 col-xl-3">
@@ -9,7 +10,7 @@ class Statics extends Component {
                             <div class="row">
                                 <div class="col">
                                     <h5 class="text-uppercase text-muted mb-0 card-title">Thiết bị kết nối</h5>
-                                    <span class="h2 font-weight-bold mb-0">30</span>
+                                    <span class="h2 font-weight-bold mb-0">{this.props.onCountDeviceOnlie}</span>
                                 </div>
                                 <div class="col-auto col">
                                     <div class="icon icon-shape bg-danger text-white rounded-circle shadow">
@@ -31,7 +32,7 @@ class Statics extends Component {
                             <div class="row">
                                 <div class="col">
                                     <h5 class="text-uppercase text-muted mb-0 card-title">Tài khoản chia sẻ</h5>
-                                    <span class="h2 font-weight-bold mb-0">2</span>
+                                    <span class="h2 font-weight-bold mb-0">{this.props.onCountShareUser}</span>
                                 </div>
                                 <div class="col-auto col">
                                     <div class="icon icon-shape bg-warning text-white rounded-circle shadow">
