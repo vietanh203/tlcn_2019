@@ -4,44 +4,73 @@ class Footer extends Component {
     render() {
         return (
 
-            <footer className="page-footer font-small blue pt-4" style={{backgroundColor:'darkgrey'}}>
+            <footer ClassName="page-footer font-small unique-color-dark">
 
-                <div className="container-fluid text-center text-md-left">
+                <div class="container text-center text-md-left mt-5" style={{ backgroundColor: 3e5569 }}>
 
-                    <div className="row">
+                    <div class="row mt-3">
 
-                        <div className="col-md-6 mt-md-0 mt-3">
+                        <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+                            <h6 class="text-uppercase font-weight-bold">IOT Vision</h6>
+                            <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style={{ width: 60 }} />
+                            <p>Cung cấp và quản lý thiết bị IOT.</p>
 
-                            <h5 className="text-uppercase">IOTVISION</h5>
-                            <p>Cung cấp dịch vu quản lý và điều khiển thiết bị IOT</p>
                         </div>
 
-                        <hr className="clearfix w-100 d-md-none pb-3" />
-                        <div className="col-md-3 mb-md-0 mb-3">
+                        <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
 
-                            <h5 className="text-uppercase">Liên Hệ</h5>
-                            <ul className="list-unstyled">
-                                <li>
-                                    <a href="#!">email : lcnghia95@gmail.com</a>
-                                </li>
-                                <li>
-                                    <a href="#!">SDT : 0333865088</a>
-                                </li>
-                                <li>
-                                    <a href="#!">Address : 484 Lê Văn Việt, Tăng Nhơn Phú A, Quận 9, Hồ Chí Minh</a>
-                                </li>
-                            </ul>
+                            <h6 class="text-uppercase font-weight-bold">Sản phẩm</h6>
+                            <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style={{ width: 60 }} />
+                            <p>
+                                <a href="#!">Bóng đèn</a>
+                            </p>
+                            <p>
+                                <a href="#!">Bộ điều khiển</a>
+                            </p>
+                            <p>
+                                <a href="#!">Máy lạnh</a>
+                            </p>
+
+                        </div>
+
+                        <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+
+                            <h6 class="text-uppercase font-weight-bold">Useful links</h6>
+                            <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style={{ width: 60 }} />
+                            <p>
+                                <a href="#!">Đối tác</a>
+                            </p>
+                            <p>
+                                <a href="#!">Phí vận chuyển</a>
+                            </p>
+                            <p>
+                                <a href="#!">Hỗ trợ</a>
+                            </p>
+
+                        </div>
+
+                        <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+
+                            <h6 class="text-uppercase font-weight-bold">Liên hệ</h6>
+                            <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style={{ width: 60 }} />
+                            <p>
+                                <i class="fas fa-home mr-3"></i> Lê Văn Việt, Quận 9, HCM</p>
+                            <p>
+                                <i class="fas fa-envelope mr-3"></i> lcnghia95@gmail.com</p>
+                            <p>
+                                <i class="fas fa-phone mr-3"></i> + 01 234 567 88</p>
+
                         </div>
 
                     </div>
 
                 </div>
 
-                <div className="footer-copyright text-center py-3">© 2018 Copyright:
-                     <a href="https://mdbootstrap.com/education/bootstrap/"> MDBootstrap.com</a>
+                <div class="footer-copyright text-center py-3">© 2019 Copyright:
+                <a href="https://mdbootstrap.com/education/bootstrap/"> IOTVISON.com</a>
                 </div>
 
-            </footer>
+            </footer >
 
         );
     }
