@@ -51,11 +51,14 @@ class DeviceList extends Component {
             'x-access-token': this.props.token
         }).then(res => {
             if (res.data) {
-                this.setState({
-                    devices: this.sort(res.data.myDevice ),
-                    deviceShare: this.sort(res.data.shareDevice )
-                })
-                console.log(true)
+                if(res.data.myDevice){
+                    this.setState({
+                        devices: this.sort(res.data.myDevice ),
+                        deviceShare: this.sort(res.data.shareDevice )
+                    })
+                }
+                
+                //console.log(true)
             }
 
         });

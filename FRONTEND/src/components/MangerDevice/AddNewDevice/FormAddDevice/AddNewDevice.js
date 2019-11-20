@@ -8,183 +8,191 @@ import callApi from '../../../../apicall/apiCaller'
 
 
 class AddNewDevice extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
-      formControll : [
+      formControll: [
         {
-          id:1,
-          status : true,
-          statusTablist : true,
-          validateTablist :false,
-          validate : false
+          id: 1,
+          status: true,
+          statusTablist: true,
+          validateTablist: false,
+          validate: false
         },
         {
-          id:2,
-          status : false,
-          statusTablist : false,
-          validateTablist :false,
-          validate : false
+          id: 2,
+          status: false,
+          statusTablist: false,
+          validateTablist: false,
+          validate: false
         },
         {
-          id:3,
-          status : false,
-          statusTablist : false,
-          validateTablist :false,
-          validate : false
+          id: 3,
+          status: false,
+          statusTablist: false,
+          validateTablist: false,
+          validate: false
         },
         {
-          id:4,
-          status : false,
-          statusTablist : false,
-          validateTablist :false,
-          validate : false
+          id: 4,
+          status: false,
+          statusTablist: false,
+          validateTablist: false,
+          validate: false
         }
       ],
-      onButtonNext : 'block',
+      onButtonNext: 'block',
       onButtonFinish: 'none',
-      id:'',
-      nameDevice:'',
-      manaUser:'',
-      manaAreas:'',
-      shareID:[]
+      id: '',
+      nameDevice: '',
+      manaUser: '',
+      manaAreas: '',
+      shareID: [],
+      message: ''
     }
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.setState({
-      manaUser:this.props.username
+      manaUser: this.props.username
     })
   }
 
   onForm = (id) => {
-    var form = this.state.formControll.find((value,index)=>{
-      return value ?  value.id ===id : '';
+    var form = this.state.formControll.find((value, index) => {
+      return value ? value.id === id : '';
     });
     return form.status;
   }
-  onStatusTablist = (id) =>{
-    var form = this.state.formControll.find((value,index)=>{
-      return value ?  value.id ===id : '';
+  onStatusTablist = (id) => {
+    var form = this.state.formControll.find((value, index) => {
+      return value ? value.id === id : '';
     });
 
-    if(form.validateTablist&&!form.statusTablist){
+    if (form.validateTablist && !form.statusTablist) {
       return 'done';
-    }else if(form.statusTablist){
+    } else if (form.statusTablist) {
       return 'current';
-    }else return 'disabled';
+    } else return 'disabled';
   }
-  onNext = () => { 
-    var index = this.state.formControll.findIndex((value,index)=>{
-      return value.status=== true ;
+  onNext = () => {
+    var index = this.state.formControll.findIndex((value, index) => {
+      return value.status === true;
     });
-    var formControll = [...{...this.state}.formControll];
-    if(index <3){
-      formControll[index].status=false;
-      formControll[index].statusTablist=false;
-      formControll[index].validateTablist=true;
-      formControll[index+1].statusTablist=true;
-      formControll[index+1].status=true;
+    var formControll = [...{ ...this.state }.formControll];
+    if (index < 3) {
+      formControll[index].status = false;
+      formControll[index].statusTablist = false;
+      formControll[index].validateTablist = true;
+      formControll[index + 1].statusTablist = true;
+      formControll[index + 1].status = true;
     }
     this.setState({
       formControll
     });
-    if(index ===2 ){
+    if (index === 2) {
       this.setState({
-        onButtonNext : 'none' ,
-        onButtonFinish : 'block'
+        onButtonNext: 'none',
+        onButtonFinish: 'block'
       });
     }
-    if(index ===0 && formControll[index].validateTablist!==false ){
+    if (index === 0 && formControll[index].validateTablist !== false) {
       this.setState({
-        onButtonNext : 'none' ,
+        onButtonNext: 'none',
       });
     }
     console.log(this.state);
   }
-  onPrevious = () =>{
-    var index = this.state.formControll.findIndex((value,index)=>{
-      return value.status=== true ;
+  onPrevious = () => {
+    var index = this.state.formControll.findIndex((value, index) => {
+      return value.status === true;
     });
-    var formControll = [...{...this.state}.formControll];
-    if(index > 0 ){
-      formControll[index].status=false;
-      formControll[index].statusTablist=false;
-      formControll[index-1].statusTablist=true;
-      formControll[index-1].status=true;
+    var formControll = [...{ ...this.state }.formControll];
+    if (index > 0) {
+      formControll[index].status = false;
+      formControll[index].statusTablist = false;
+      formControll[index - 1].statusTablist = true;
+      formControll[index - 1].status = true;
     }
     this.setState({
       formControll
     });
-    if(index<4){
+    if (index < 4) {
       this.setState({
-        onButtonNext : 'block' ,
-        onButtonFinish : 'none'
+        onButtonNext: 'block',
+        onButtonFinish: 'none'
       })
     }
   }
-  onClickTabList = (id) =>{
-    var index = this.state.formControll.findIndex((value,index)=>{
-      return value.id=== id ;
+  onClickTabList = (id) => {
+    var index = this.state.formControll.findIndex((value, index) => {
+      return value.id === id;
     });
-    var formControll = [...{...this.state}.formControll];
-    if(formControll[index].validateTablist){
+    var formControll = [...{ ...this.state }.formControll];
+    if (formControll[index].validateTablist) {
       // formControll.map((value,index)=>
-      for(var i =0 ; i < formControll.length ; i++ ){
-        if(formControll[i].id===id){
-          formControll[i].statusTablist=true;
-          formControll[i].status=true;
-        }else{
-          formControll[i].statusTablist=false;
-          formControll[i].status=false;
+      for (var i = 0; i < formControll.length; i++) {
+        if (formControll[i].id === id) {
+          formControll[i].statusTablist = true;
+          formControll[i].status = true;
+        } else {
+          formControll[i].statusTablist = false;
+          formControll[i].status = false;
         }
       };
       this.setState({
         formControll
       });
     }
-    
+
   }
-  getDataFormTwo = (id,check)=>{
+  getDataFormTwo = (id, check) => {
     console.log(id)
-   if(check){
+    if (check) {
+      this.setState({
+        id: id
+      })
+      this.onNext()
+    }
+  }
+  getDataFormThree = (nameDevice, manaAreas) => {
+    console.log(nameDevice, manaAreas)
     this.setState({
-      id:id
+      manaAreas: manaAreas,
+      nameDevice: nameDevice
     })
     this.onNext()
-   }
   }
-  getDataFormThree = (nameDevice,manaAreas) =>{
-    console.log(nameDevice,manaAreas)
-    this.setState({
-      manaAreas : manaAreas,
-      nameDevice : nameDevice
-    })
-    this.onNext()
-  }
-  getDataFormFour = (arrUser)=>{
+  getDataFormFour = (arrUser) => {
     console.log(arrUser)
     this.setState({
-      shareID:arrUser
+      shareID: arrUser
     })
-    
+
   }
 
-  onSubmit = ()=>{
-    
-    if(this.state.id){
-      callApi(`api/devices/${this.state.id}`,'PUT',{
-        token:this.props.token,
-        name : this.state.nameDevice,
-        shareID:this.state.shareID,
-        manaUser:this.state.manaUser,
-        manaAreas:this.state.manaAreas
+  onSubmit = () => {
 
-      }).then(res=>{
+    if (this.state.id) {
+      callApi(`api/devices/${this.state.id}`, 'PUT', {
+        token: this.props.token,
+        name: this.state.nameDevice,
+        shareID: this.state.shareID,
+        manaUser: this.state.manaUser,
+        manaAreas: this.state.manaAreas
+
+      }).then(res => {
         console.log(res)
+      })
+      this.setState({
+        message : 'true'
       })
     }
   }
+
+
+
+
 
   render() {
     console.log(this.state.nameDevice)
@@ -196,26 +204,26 @@ class AddNewDevice extends Component {
             <div role="application" className="wizard clearfix" id="steps-uid-0">
               <div className="steps clearfix">
                 <ul role="tablist">
-                  <li role="tab" className={this.onStatusTablist(1)} onClick={() =>this.onClickTabList(1)} aria-disabled="false" aria-selected="true">
+                  <li role="tab" className={this.onStatusTablist(1)} onClick={() => this.onClickTabList(1)} aria-disabled="false" aria-selected="true">
                     <a id="steps-uid-0-t-0" href="# " aria-controls="steps-uid-0-p-0">
-                      
+
                       <span className="number">1.</span>
                       Cài đặt thiết bị
                     </a>
                   </li>
-                  <li role="tab"  className={this.onStatusTablist(2)} onClick={() => this.onClickTabList(2)} aria-disabled="true" >
+                  <li role="tab" className={this.onStatusTablist(2)} onClick={() => this.onClickTabList(2)} aria-disabled="true" >
                     <a id="steps-uid-0-t-1" href="# " aria-controls="steps-uid-0-p-1">
                       <span className="number">2.</span>
                       Kết Nối Với Thiết Bị
                     </a>
                   </li>
-                  <li role="tab"  className={this.onStatusTablist(3)} onClick={() =>this.onClickTabList(3)} aria-disabled="true">
+                  <li role="tab" className={this.onStatusTablist(3)} onClick={() => this.onClickTabList(3)} aria-disabled="true">
                     <a id="steps-uid-0-t-2" href="# " aria-controls="steps-uid-0-p-2">
                       <span className="number">3.</span>
                       Cài Đặt Khu Vực
                     </a>
                   </li>
-                  <li role="tab"  className={this.onStatusTablist(4)} onClick={()=>this.onClickTabList(4)} aria-disabled="true">
+                  <li role="tab" className={this.onStatusTablist(4)} onClick={() => this.onClickTabList(4)} aria-disabled="true">
                     <a id="steps-uid-0-t-3" href="# " aria-controls="steps-uid-0-p-3">
                       <span className="number">4.</span>
                       Chia Sẽ Thiết Bị
@@ -225,31 +233,37 @@ class AddNewDevice extends Component {
               </div>
               <div className="content clearfix">
                 <h3 id="steps-uid-0-h-0" tabIndex={-1} className="title">Account</h3>
-                <FormStepOne onForm ={this.onForm(1)}/>
+                <FormStepOne onForm={this.onForm(1)} />
                 <h3 id="steps-uid-0-h-1" tabIndex={-1} className="title">Profile</h3>
-                <FormStepTwo callFromParent={this.getDataFormTwo} onForm ={this.onForm(2)} />
+                <FormStepTwo callFromParent={this.getDataFormTwo} onForm={this.onForm(2)} />
                 <h3 id="steps-uid-0-h-2" tabIndex={-1} className="title">Hints</h3>
-                <FormStepThree callFromParent={this.getDataFormThree} onForm ={this.onForm(3)} />
+                <FormStepThree callFromParent={this.getDataFormThree} onForm={this.onForm(3)} />
                 <h3 id="steps-uid-0-h-3" tabIndex={-1} className="title">Finish</h3>
-                <FormStepFour callFromParent={this.getDataFormFour} onForm ={this.onForm(4)} />
+                <FormStepFour callFromParent={this.getDataFormFour} onForm={this.onForm(4)} />
               </div>
+                    {
+                      this.state.message != '' ? <div><br /><div class="float-left alert alert-success"> <br /> <strong>Success!</strong>Đã Thành Công !.</div></div> : ''
+                    }
               <div className="actions clearfix">
                 <ul role="menu" aria-label="Pagination">
+                  
+
+
                   <li className="disabled" aria-disabled="true">
-                    <a 
-                      href="#previous" 
+                    <a
+                      href="#previous"
                       role="menuitem"
-                      onClick = { () => this.onPrevious()}
+                      onClick={() => this.onPrevious()}
                     >Previous</a>
                   </li>
-                  <li aria-hidden="false" aria-disabled="false" style={{display : this.state.onButtonNext }} >
-                    <a 
-                      href="# " 
+                  <li aria-hidden="false" aria-disabled="false" style={{ display: this.state.onButtonNext }} >
+                    <a
+                      href="# "
                       role="menuitem"
-                      onClick = {() => this.onNext()}
+                      onClick={() => this.onNext()}
                     >Next</a>
                   </li>
-                  <li onClick={()=>this.onSubmit()} aria-hidden="false" style={{ display: this.state.onButtonFinish }}>
+                  <li onClick={() => this.onSubmit()} aria-hidden="false" style={{ display: this.state.onButtonFinish }}>
                     <a href="# " role="menuitem">Finish</a>
                   </li>
                 </ul>
@@ -263,10 +277,10 @@ class AddNewDevice extends Component {
   }
 }
 
-const mapStateToProps = state =>{
+const mapStateToProps = state => {
   return {
-    username : state.username,
-    token : state.token
+    username: state.username,
+    token: state.token
   }
 }
 
