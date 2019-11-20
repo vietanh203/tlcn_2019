@@ -48,7 +48,7 @@ mqttServer.on('subscribed', function (topic, client) {
     
     if (check!=-1) {
         mqttClient.publish(topic, JSON.stringify({ topic: topic, connect: true, online: true }));
-        callApi(`api/devices/${client.id}`, 'PUT', {
+        callApi(`api/devices/${topic}`, 'PUT', {
             connect: true,
             token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTMOqIEPDtG5nIE5naMSpYSIsImlhdCI6MTU3MTIwOTM1MX0.ghULmfQqzxAIbnkdD1bu4ZFDqNkMEZJMXgAHhZ8XP8s'
         }).then(res => {
@@ -65,7 +65,7 @@ mqttServer.on('unsubscribed', function (topic, client) {
     if (check!=-1) {
         mqttClient.publish(topic, JSON.stringify({ topic: topic, connect: false, online: true }));
         console.log(topic, client.id);
-        callApi(`api/devices/${client.id}`, 'PUT', {
+        callApi(`api/devices/${topic}`, 'PUT', {
             connect: false,
             token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTMOqIEPDtG5nIE5naMSpYSIsImlhdCI6MTU3MTIwOTM1MX0.ghULmfQqzxAIbnkdD1bu4ZFDqNkMEZJMXgAHhZ8XP8s'
         }).then(res => {

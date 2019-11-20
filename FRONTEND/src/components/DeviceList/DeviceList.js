@@ -81,7 +81,7 @@ class DeviceList extends Component {
                 return (<LightDeviceItem
                     key={index}
                     name={value.name}
-                    status={value.data.status}
+                    status={value.data.status ? value.data.status : false }
                     index={value.id}
                     topic={value.id}
                     connect={value.connect}
