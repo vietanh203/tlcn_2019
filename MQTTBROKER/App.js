@@ -60,8 +60,9 @@ mqttServer.on('subscribed', function (topic, client) {
 
 mqttServer.on('unsubscribed', function (topic, client) {
     console.log('unsubscribe : ' + topic);
-
-    if (topic == client.id) {
+    let check = topic.search(client.id);
+    
+    if (check!=-1) {
         mqttClient.publish(topic, JSON.stringify({ topic: topic, connect: false, online: true }));
         console.log(topic, client.id);
         callApi(`api/devices/${client.id}`, 'PUT', {
