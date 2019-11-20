@@ -17,18 +17,18 @@ exports.list_all_devices = function (req, res) {
 exports.create_a_device = function (req, res) {
   Device.find({ id: req.body.id }, function (err, user) {
     if(err) res.send(false);
-    if (!user.id) {
-      
-      var new_device = new Device(req.body);
-      new_device.save(function (err, device) {
-        if (err)
-          res.send(err);
-        res.send(true);
-      });
-    }else{
-      
-      res.send(true)
+    if(!(user.length>0)){
+        var new_device = new Device(req.body);
+        new_device.save(function (err, device) {
+          if (err)
+            res.send(err);
+          res.send(false);
+        });
+      }else{
+        console.log(user)
+        res.send(true)
     }
+   
   })
 
 
