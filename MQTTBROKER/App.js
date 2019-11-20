@@ -44,8 +44,9 @@ mqttServer.on('published', function (packet, client) {
 
 mqttServer.on('subscribed', function (topic, client) {
     console.log('subscribe : ' + topic);
-
-    if (topic == client.id) {
+    let check = topic.search(client.id);
+    
+    if (check!=-1) {
         mqttClient.publish(topic, JSON.stringify({ topic: topic, connect: true, online: true }));
         callApi(`api/devices/${client.id}`, 'PUT', {
             connect: true,

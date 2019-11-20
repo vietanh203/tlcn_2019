@@ -20,7 +20,8 @@ var UserSchema = new Schema({
     id:String,
     password:String,
     manaUser : String,
-    name:String
+    name:String,
+    type :String
   }); 
   
   module.exports = mongoose.model('devices', UserSchema);
