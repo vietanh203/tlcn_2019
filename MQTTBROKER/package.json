@@ -11,7 +11,7 @@
   "author": "lcnghia",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "mosca": "^2.8.3",
     "mqtt": "^3.0.0",
     "mssql": "^5.1.0",
